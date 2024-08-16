@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
+
+{% block content %}
+<div class="pricing-header px3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Книги</h1>
+    <p class="lead">Корабли мысли, странствующие по волнам времени и бережно несущие свой драгоценный груз от поколения
+        к поколению.</p>
+</div>
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for book in data %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <img src={{ book.image_link }} width="100%" height="100%"/>
+                    </svg>
+                    <div class="card-body">
+                        <p></p><h4 class="my-0 fw-normal">{{ book.name }}</h4></p>
+                        <p class="card-text">Автор: {{ book.author }}</p>
+                        <p class="card-text">Год: {{ book.year }}</p>
+                        <p class="card-text">Жанр: {{ book.category }}</p>
+                        <p class="card-text">Цена: {{ book.price }} ₽</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group" role="group">
+                                <div class="btn-toolbar" role="toolbar"
+                                     aria-label="Панель инструментов с группами кнопок">
+                                    <div class="btn-group me-2" role="group" aria-label="Первая группа">
+                                        <a href="/buy/{{ book.id }}" target="_blank" class="btn btn-primary">Купить</a>
+                                    </div>
+
+                                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                        <div class="btn-group mr-2" role="group" aria-label="First group">
+                                            <button type="button" class="btn btn-secondary" disabled>Аренда</button>
+                                            <a href="/rent/14/{{ book.id }}" target="_blank"
+                                               class="btn btn-secondary">2 нед</a>
+                                            <a href="/rent/31/{{ book.id }}" target="_blank"
+                                               class="btn btn-secondary">мес</a>
+                                            <a href="/rent/93/{{ book.id }}" target="_blank"
+                                               class="btn btn-secondary">3 мес</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

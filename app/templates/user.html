@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table>
+    <tr valign="top">
+        <td><img src="{{ user.avatar(128) }}"></td>
+        <td>
+            <h1>{{ user.username }}</h1>
+            {% if user.last_seen %}<p>Последний вход: {{ moment(user.last_seen).format('LLL') }}</p>
+            {% endif %}
+            <p>{{ user.email }}</p>
+            {% if user.telegram %}
+            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                <button type="button" class="btn btn-outline-secondary btn-sm" disabled>Telegram</button>
+                <a class="btn btn-outline-primary btn-sm" href='https://t.me/{{ user.telegram }}' target="_blank">{{ user.telegram
+                    }}⤴︎</a>
+            </div>
+            {%
+            endif %}
+            <br><br>
+
+            {% if user == current_user %}
+            {% if not user.telegram %}
+            <p>Telegram: <a href='https://t.me/bloknot_blog_bot target="_blank"'>Подключить</a></p>{% endif %}
+            {% elif not current_user.is_following(user) %}
+            {% endif %}
+        </td>
+    </tr>
+</table>
+<div class="pricing-header px3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <p class="lead">Ваша полка</p>
+</div>
+
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for order in data %}
+            {% if order.end_rent %}
+            {% if now < order.end_rent %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <img src={{ order.book.image_link }} width="100%" height="100%">
+                    <h5><span
+                            class="position-absolute top-0 start-50 translate-middle badge rounded-pill badge text-bg-warning">
+                        Аренда
+                        <span class="visually-hidden">Арендованая книга</span>
+                    </span>
+                    </h5>
+                    </img>
+                    </svg>
+                    <div class="card-body">
+                        <p></p><h4 class="my-0 fw-normal">{{ order.book.name }}</h4></p>
+                        <p class="card-text"></p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group" role="group">
+                                <div class="btn-toolbar" role="toolbar"
+                                     aria-label="Панель инструментов с группами кнопок">
+                                    <a href="/reed/{{ order.book.id }}" target="_blank"
+                                       class="btn btn-outline-success btn-lg">Читать</a>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-dark disabled ">До {{ order.end_rent }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endif %}
+
+            {% if not order.end_rent %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <img src={{ order.book.image_link }} width="100%" height="100%"/>
+                    </svg>
+                    <div class="card-body">
+                        <p></p><h4 class="my-0 fw-normal">{{ order.book.name }}</h4></p>
+                        <p class="card-text"></p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group" role="group">
+                                <div class="btn-toolbar" role="toolbar"
+                                     aria-label="Панель инструментов с группами кнопок">
+                                    <a href="/reed/{{ order.book.id }}" target="_blank"
+                                       class="btn btn-outline-success btn-lg">Читать</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
